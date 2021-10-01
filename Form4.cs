@@ -7,7 +7,6 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using System.Drawing.Drawing2D;
 
 namespace CompGraf3
 {
@@ -20,6 +19,97 @@ namespace CompGraf3
         Pen p3 = new Pen(Color.Red, 1), p1 = new Pen(Color.Green, 1), p2 = new Pen(Color.Blue, 1);
         Color gr1 = Color.Green, gr2 = Color.Blue, gr3 = Color.Red;
         private Graphics g;
+
+        private void textBox1_TextChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                if (textBox1.Text != "")
+                {
+                    gr1x = int.Parse(textBox1.Text);
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+        }
+
+        private void textBox2_TextChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                if (textBox2.Text != "")
+                {
+                    gr1y = int.Parse(textBox2.Text);
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+        }
+
+        private void textBox3_TextChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                if (textBox3.Text != "")
+                {
+                    gr2x = int.Parse(textBox3.Text);
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+        }
+
+        private void textBox4_TextChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                if (textBox4.Text != "")
+                {
+                    gr2y = int.Parse(textBox4.Text);
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+        }
+
+        private void textBox5_TextChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                if (textBox5.Text != "")
+                {
+                    gr3x = int.Parse(textBox5.Text);
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+        }
+
+        private void textBox6_TextChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                if (textBox6.Text != "")
+                {
+                    gr3y = int.Parse(textBox6.Text);
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+        }
+
         public Form4(Form1 form1)
         {
             main = form1;
@@ -36,9 +126,23 @@ namespace CompGraf3
 
         private void button4_Click(object sender, EventArgs e)
         {
+            if (gr1x >= pictureBox1.Width || gr1x < 0 || gr2x >= pictureBox1.Width || gr2x < 0 || gr3x >= pictureBox1.Width || gr3x < 0 ||
+                gr1y >= pictureBox1.Height || gr1y < 0 || gr2y >= pictureBox1.Height || gr2y < 0 || gr3y >= pictureBox1.Height || gr3y < 0)
+            {
+                MessageBox.Show("Неверные координаты");
+                return;
+            }
             //g.DrawEllipse(p1, gr1x-25, gr1y - 25, 50, 50);
             //g.DrawEllipse(p2, gr2x - 25, gr2y - 25, 50, 50);
             //g.DrawEllipse(p3, gr3x - 25, gr3y - 25, 50, 50);
+            g.Clear(Color.White);
+            List<(int, int)> sort = new List<(int, int)>();
+            sort.Add((gr1y, gr1x)); sort.Add((gr2y, gr2x)); sort.Add((gr3y, gr3x));
+            sort.Sort();
+            Console.WriteLine(sort[0] + " " + sort[1] + " " + sort[2]);
+            gr1x = sort[0].Item2; gr1y = sort[0].Item1;
+            gr3x = sort[1].Item2; gr3y = sort[1].Item1;
+            gr2x = sort[2].Item2; gr2y = sort[2].Item1;
             //уравнения сторон
             double h1 = (gr2x - gr1x) / (double)(gr2y - gr1y);
             (double, double) ur1_2 = (h1,-gr1y*h1 + gr1x);
