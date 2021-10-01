@@ -30,7 +30,7 @@ namespace CompGraf3
             pictureBox1.Invalidate();
             lines = new Pen(Color.Black, 1);
             pzal = new Pen(Color.Green, 1);
-            g.DrawEllipse(lines, pictureBox1.Width / 2, pictureBox1.Height / 2, 200, 200);
+            //g.DrawEllipse(lines, pictureBox1.Width / 2, pictureBox1.Height / 2, 200, 200);
             radioButton1.Checked = true;
             t.Add(d0); t.Add(d1); t.Add(d2); t.Add(d3); t.Add(d4); t.Add(d5); t.Add(d6); t.Add(d7);
         }
@@ -220,7 +220,7 @@ namespace CompGraf3
                 tekr = tekl + piczal.Width;
                 for (int i = 0; i <= tekr - tekl; i++)
                 {
-                    Color tekc = piczal.GetPixel(i % piczal.Width, y % piczal.Height);
+                    Color tekc = piczal.GetPixel((tekl + i) % piczal.Width, y % piczal.Height);
                     ((Bitmap)pictureBox1.Image).SetPixel(tekl + i, y, tekc);
                 }
                 tekl += piczal.Width;
