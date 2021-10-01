@@ -16,7 +16,7 @@ namespace CompGraf3
         int gr1x = 100,gr1y = 100;
         int gr2x = 150, gr2y = 400;
         int gr3x = 600, gr3y = 200;
-        Pen p3 = new Pen(Color.Red, 1), p1 = new Pen(Color.Green, 1), p2 = new Pen(Color.Blue, 1);
+        //Pen p3 = new Pen(Color.Red, 1), p1 = new Pen(Color.Green, 1), p2 = new Pen(Color.Blue, 1);
         Color gr1 = Color.Green, gr2 = Color.Blue, gr3 = Color.Red;
         private Graphics g;
 
@@ -136,13 +136,13 @@ namespace CompGraf3
             //g.DrawEllipse(p2, gr2x - 25, gr2y - 25, 50, 50);
             //g.DrawEllipse(p3, gr3x - 25, gr3y - 25, 50, 50);
             g.Clear(Color.White);
-            List<(int, int)> sort = new List<(int, int)>();
-            sort.Add((gr1y, gr1x)); sort.Add((gr2y, gr2x)); sort.Add((gr3y, gr3x));
+            List<(int, int,Color)> sort = new List<(int, int,Color)>();
+            sort.Add((gr1y, gr1x,gr1)); sort.Add((gr2y, gr2x,gr2)); sort.Add((gr3y, gr3x,gr3));
             sort.Sort();
             Console.WriteLine(sort[0] + " " + sort[1] + " " + sort[2]);
-            gr1x = sort[0].Item2; gr1y = sort[0].Item1;
-            gr3x = sort[1].Item2; gr3y = sort[1].Item1;
-            gr2x = sort[2].Item2; gr2y = sort[2].Item1;
+            gr1x = sort[0].Item2; gr1y = sort[0].Item1; gr1 = sort[0].Item3;
+            gr3x = sort[1].Item2; gr3y = sort[1].Item1; gr3 = sort[1].Item3;
+            gr2x = sort[2].Item2; gr2y = sort[2].Item1; gr2 = sort[2].Item3;
             //уравнения сторон
             double h1 = (gr2x - gr1x) / (double)(gr2y - gr1y);
             (double, double) ur1_2 = (h1,-gr1y*h1 + gr1x);
@@ -152,52 +152,52 @@ namespace CompGraf3
             (double, double) ur2_3 = (h3, -(gr2y * h3) + gr2x);
             //уравнения цветов стороны 1-2
             if (gr2x - gr1x != 0)
-                h1 = (p2.Color.R - p1.Color.R) / (double)(gr2x - gr1x);
+                h1 = (gr2.R - gr1.R) / (double)(gr2x - gr1x);
             else
                 h1 = 0;
-            (double, double) r1 = (h1, -gr1x * h1 + p1.Color.R);
+            (double, double) r1 = (h1, -gr1x * h1 + gr1.R);
             if (gr2x - gr1x != 0)
-                h2 = (p2.Color.G - p1.Color.G) / (double)(gr2x - gr1x);
+                h2 = (gr2.G - gr1.G) / (double)(gr2x - gr1x);
             else
                 h2 = 0;
-            (double, double) g1 = (h2, -gr1x * h2 + p1.Color.G);
+            (double, double) g1 = (h2, -gr1x * h2 + gr1.G);
             if (gr2x - gr1x != 0)
-                h3 = (p2.Color.B - p1.Color.B) / (double)(gr2x - gr1x);
+                h3 = (gr2.B - gr1.B) / (double)(gr2x - gr1x);
             else
                 h3 = 0;
-            (double, double) b1 = (h3, -gr1x * h3 + p1.Color.B);
+            (double, double) b1 = (h3, -gr1x * h3 + gr1.B);
             //уравнения цветов стороны 1-3
             if (gr3x - gr1x != 0)
-                h1 = (p3.Color.R - p1.Color.R) / (double)(gr3x - gr1x);
+                h1 = (gr3.R - gr1.R) / (double)(gr3x - gr1x);
             else
                 h1 = 0;
-            (double, double) r2 = (h1, -gr1x * h1 + p1.Color.R);
+            (double, double) r2 = (h1, -gr1x * h1 + gr1.R);
             if (gr3x - gr1x != 0)
-                h2 = (p3.Color.G - p1.Color.G) / (double)(gr3x - gr1x);
+                h2 = (gr3.G - gr1.G) / (double)(gr3x - gr1x);
             else
                 h2 = 0;
-            (double, double) g2 = (h2, -gr1x * h2 + p1.Color.G);
+            (double, double) g2 = (h2, -gr1x * h2 + gr1.G);
             if (gr3x - gr1x != 0)
-                h3 = (p3.Color.B - p1.Color.B) / (double)(gr3x - gr1x);
+                h3 = (gr3.B - gr1.B) / (double)(gr3x - gr1x);
             else
                 h3 = 0;
-            (double, double) b2 = (h3, -gr1x * h3 + p1.Color.B);
+            (double, double) b2 = (h3, -gr1x * h3 + gr1.B);
             //уравнения цветов стороны 2-3
             if (gr3x - gr2x != 0)
-                h1 = (p3.Color.R - p2.Color.R) / (double)(gr3x - gr2x);
+                h1 = (gr3.R - gr2.R) / (double)(gr3x - gr2x);
             else
                 h1 = 0;
-            (double, double) r3 = (h1, -gr2x * h1 + p2.Color.R);
+            (double, double) r3 = (h1, -gr2x * h1 + gr2.R);
             if (gr3x - gr2x != 0)
-                h2 = (p3.Color.G - p2.Color.G) / (double)(gr3x - gr2x);
+                h2 = (gr3.G - gr2.G) / (double)(gr3x - gr2x);
             else
                 h2 = 0;
-            (double, double) g3 = (h2, -gr2x * h2 + p2.Color.G);
+            (double, double) g3 = (h2, -gr2x * h2 + gr2.G);
             if (gr3x - gr1x != 0)
-                h3 = (p3.Color.B - p2.Color.B) / (double)(gr3x - gr2x);
+                h3 = (gr3.B - gr2.B) / (double)(gr3x - gr2x);
             else
                 h3 = 0;
-            (double, double) b3 = (h3, -gr2x * h3 + p2.Color.B);
+            (double, double) b3 = (h3, -gr2x * h3 + gr2.B);
             //Console.WriteLine(r1 + " " + g1 + " " + b1);            
             for (int i = gr1y + 1; i <= gr3y; i++)
             {
@@ -241,7 +241,7 @@ namespace CompGraf3
             if (colorDialog1.ShowDialog() == DialogResult.OK)
             {
                 gr1 = colorDialog1.Color;
-                p1.Color = gr1;
+                //p1.Color = gr1;
                 ((Bitmap)pictureBox1.Image).SetPixel(gr1x, gr1y, gr1);
                 pictureBox1.Invalidate();
             }
@@ -252,7 +252,7 @@ namespace CompGraf3
             if (colorDialog1.ShowDialog() == DialogResult.OK)
             {
                 gr2 = colorDialog1.Color;
-                p2.Color = gr2;
+                //p2.Color = gr2;
                 ((Bitmap)pictureBox1.Image).SetPixel(gr2x, gr2y, gr2);
                 pictureBox1.Invalidate();
             }
@@ -263,7 +263,7 @@ namespace CompGraf3
             if (colorDialog1.ShowDialog() == DialogResult.OK)
             {
                 gr3 = colorDialog1.Color;
-                p3.Color = gr3;
+                //p3.Color = gr3;
                 ((Bitmap)pictureBox1.Image).SetPixel(gr3x, gr3y, gr3);
                 pictureBox1.Invalidate();
             }

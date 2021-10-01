@@ -37,12 +37,16 @@ namespace CompGraf3
         }
         private void drawByBresenham(Point p1, Point p2)
         {
-            if (p1.X < 0 || p1.X >= 300 || p2.X < 0 || p2.X >= 300 || p1.Y < 0 || p1.Y >= 300 || p2.Y < 0 || p2.Y >= 300)
+            if (p1.X < 0 || p1.X >= pictureBox1.Width || p2.X < 0 || p2.X >= pictureBox1.Width
+                || p1.Y < 0 || p1.Y >= pictureBox1.Height || p2.Y < 0 || p2.Y >= pictureBox1.Height)
             {
                 MessageBox.Show("Неверные координаты");
                 return;
             }
             Bitmap bitmap = new Bitmap(pictureBox1.Width, pictureBox1.Height);
+            //Console.WriteLine(bitmap.Width + " " + bitmap.Height);
+            //Console.WriteLine(pictureBox1.Width + " " + pictureBox1.Height);
+            //Console.WriteLine(button5.Width + " " + button5.Height);
             int dx = Math.Abs(p2.X - p1.X);
             int dy = Math.Abs(p2.Y - p1.Y);
             bool lowK = dy / dx < 1;
@@ -82,7 +86,8 @@ namespace CompGraf3
 
         private void drawByWu(Point p1, Point p2)
         {
-            if (p1.X < 0 || p1.X >= 300 || p2.X < 0 || p2.X >= 300 || p1.Y < 0 || p1.Y >= 300 || p2.Y < 0 || p2.Y >= 300)
+            if (p1.X < 0 || p1.X >= pictureBox1.Width || p2.X < 0 || p2.X >= pictureBox1.Width 
+                || p1.Y < 0 || p1.Y >= pictureBox1.Height || p2.Y < 0 || p2.Y >= pictureBox1.Height)
             {
                 MessageBox.Show("Неверные координаты");
                 return;
