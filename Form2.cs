@@ -307,10 +307,12 @@ namespace CompGraf3
             }
             del = help_dir(dir);
             tek = ((Bitmap)pictureBox1.Image).GetPixel(tekx + del.Item1, teky + del.Item2);
+            int count = 0;
             while (tekx != finx || teky != y)
             {
                 if ((tek.G == lines.Color.G) && (tek.B == lines.Color.B) && (tek.R == lines.Color.R)) {
                     ls.Add(new Point(tekx + del.Item1, teky + del.Item2));
+                    //dirwas = dir;
                     dir = (dir + 6) % 8;
                     tekx += del.Item1;
                     teky += del.Item2;
@@ -321,7 +323,20 @@ namespace CompGraf3
                     {
                         dir = (dir + 1) % 8;
                         del = help_dir(dir);
+                        if ((tekx + del.Item1 >= pictureBox1.Width) || (teky + del.Item2 >= pictureBox1.Height) || 
+                            (tekx + del.Item1 <= 0) || (teky + del.Item2 <= 0))
+                        {
+                            MessageBox.Show("Выход за границы области изображения");
+                            return;
+                        }
                         tek = ((Bitmap)pictureBox1.Image).GetPixel(tekx + del.Item1, teky + del.Item2);
+                    }
+                    if (ls.Contains(new Point(tekx + del.Item1, teky + del.Item2)))
+                        count++;
+                    if (count == 10)
+                    {
+                        MessageBox.Show("Область не связна");
+                        return;
                     }
                     ls.Add(new Point(tekx + del.Item1, teky + del.Item2));
                     dir = (dir + 6) % 8;
@@ -329,6 +344,12 @@ namespace CompGraf3
                     teky += del.Item2;
                 }
                 del = help_dir(dir);
+                if ((tekx >= pictureBox1.Width + del.Item1) || (teky >= pictureBox1.Height + del.Item2) ||
+                            (tekx + del.Item1 <= 0) || (teky + del.Item2 <= 0))
+                {
+                    MessageBox.Show("Выход за границы области изображения");
+                    return;
+                }
                 tek = ((Bitmap)pictureBox1.Image).GetPixel(tekx + del.Item1, teky + del.Item2);
             }
             foreach (var a in ls)

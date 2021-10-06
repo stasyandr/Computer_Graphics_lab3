@@ -19,6 +19,7 @@ namespace CompGraf3
         //Pen p3 = new Pen(Color.Red, 1), p1 = new Pen(Color.Green, 1), p2 = new Pen(Color.Blue, 1);
         Color gr1 = Color.Green, gr2 = Color.Blue, gr3 = Color.Red;
         private Graphics g;
+        private Bitmap bit;
 
         private void textBox1_TextChanged(object sender, EventArgs e)
         {
@@ -115,7 +116,8 @@ namespace CompGraf3
             main = form1;
             InitializeComponent();
             //Console.WriteLine(pictureBox1.Width + " " + pictureBox1.Height);
-            pictureBox1.Image = new Bitmap(pictureBox1.Width, pictureBox1.Height);
+            bit = new Bitmap(pictureBox1.Width, pictureBox1.Height);
+            pictureBox1.Image = bit;
             g = Graphics.FromImage(pictureBox1.Image);
             g.Clear(Color.White);
             ((Bitmap)pictureBox1.Image).SetPixel(gr1x, gr1y, gr1);
@@ -123,7 +125,16 @@ namespace CompGraf3
             ((Bitmap)pictureBox1.Image).SetPixel(gr3x, gr3y, gr3);
             pictureBox1.Invalidate();
         }
-
+        (double, double) interpolation(double x1, double y1, double x2, double y2)
+        {
+            double h;
+            if (y2 - y1 != 0)
+                h = (x2 - x1) / (y2 - y1);
+            else
+                h = 0;
+            (double, double) ur = (h, -y1 * h + x1);
+            return ur;
+        }
         private void button4_Click(object sender, EventArgs e)
         {
             if (gr1x >= pictureBox1.Width || gr1x < 0 || gr2x >= pictureBox1.Width || gr2x < 0 || gr3x >= pictureBox1.Width || gr3x < 0 ||
@@ -145,11 +156,11 @@ namespace CompGraf3
             gr2x = sort[2].Item2; gr2y = sort[2].Item1; gr2 = sort[2].Item3;
             //уравнения сторон
             double h1 = (gr2x - gr1x) / (double)(gr2y - gr1y);
-            (double, double) ur1_2 = (h1,-gr1y*h1 + gr1x);
+            (double, double) ur1_2 = interpolation(gr1x, gr1y, gr2x, gr2y);
             double h2 = (gr3x - gr1x) / (double)(gr3y - gr1y);
-            (double, double) ur1_3 = (h2, -(gr1y * h2) + gr1x);
+            (double, double) ur1_3 = interpolation(gr1x, gr1y, gr3x, gr3y);
             double h3 = (gr3x - gr2x) / (double)(gr3y - gr2y);
-            (double, double) ur2_3 = (h3, -(gr2y * h3) + gr2x);
+            (double, double) ur2_3 = interpolation(gr2x, gr2y, gr3x, gr3y);
             //уравнения цветов стороны 1-2
             if (gr2x - gr1x != 0)
                 h1 = (gr2.R - gr1.R) / (double)(gr2x - gr1x);
@@ -209,7 +220,16 @@ namespace CompGraf3
                 Color tekc = Color.FromArgb((tekcl.R + tekc2.R) / 2, (tekcl.G + tekc2.G) / 2, (tekcl.B + tekc2.B) / 2);
                 Pen tekp = new Pen(tekc, 1);
                 //Console.WriteLine(i + " " + (float)(ur1_2.Item1 * i + ur1_2.Item2) + " " + (float)(ur1_3.Item1 * i + ur1_3.Item2));
-                g.DrawLine(tekp, (float)(x1), i, (float)(x2), i);
+                (double, double) urR = interpolation(tekcl.R, x1, tekc2.R, x2);
+                (double, double) urG = interpolation(tekcl.G, x1, tekc2.G, x2);
+                (double, double) urB = interpolation(tekcl.B, x1, tekc2.B, x2);
+                for (int j = (int)x1; j <= x2; j++)
+                {
+                    bit.SetPixel(j, i, Color.FromArgb((int)(urR.Item1 * j + urR.Item2), (int)(urG.Item1 * j + urG.Item2),
+                        (int)(urB.Item1 * j+ urB.Item2)));
+
+                }
+                //g.DrawLine(tekp, (float)(x1), i, (float)(x2), i);
             }
             for (int i = gr3y + 1; i < gr2y; i++)
             {
@@ -220,8 +240,15 @@ namespace CompGraf3
                     (int)(b3.Item1 * x2 + b3.Item2));
                 Color tekc = Color.FromArgb((tekcl.R + tekc3.R) / 2, (tekcl.G + tekc3.G) / 2, (tekcl.B + tekc3.B) / 2);
                 Pen tekp = new Pen(tekc, 1);
-                //Console.WriteLine(i + " " + (float)(ur1_2.Item1 * i + ur1_2.Item2) + " " + (float)(ur1_3.Item1 * i + ur1_3.Item2));
-                g.DrawLine(tekp, (float)(x1), i, (float)(x2), i);
+                (double, double) urR = interpolation(tekcl.R, x1, tekc3.R, x2);
+                (double, double) urG = interpolation(tekcl.G, x1, tekc3.G, x2);
+                (double, double) urB = interpolation(tekcl.B, x1, tekc3.B, x2);
+                for (int j = (int)x1; j <= x2;j++)
+                {
+                    bit.SetPixel(j, i, Color.FromArgb((int)(urR.Item1* j+urR.Item2), (int)(urG.Item1 * j + urG.Item2),
+                        (int)(urB.Item1 * j + urB.Item2)));                    
+                }
+                //g.DrawLine(tekp, (float)(x1), i, (float)(x2), i);
             }
             pictureBox1.Invalidate();
         }
